@@ -50,6 +50,8 @@ impl Camera {
             }
         }
 
+        let _ = buf.save("image.png");
+
         pixels
             .frame_mut()
             .chunks_exact_mut(4)
