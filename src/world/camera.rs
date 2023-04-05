@@ -44,8 +44,14 @@ impl Camera {
 
             *pixel = image::Rgb(ray.color().data());
             for object in objects.into_iter() {
-                if object.hit_by(&ray) {
-                    *pixel = image::Rgb(object.color().data());
+                if let Some(t) = object.hit_at(&ray) {
+                    let normal = (ray.at(t) - object.position()).normalize();
+
+                    let r = ((normal.x + 1.0) * 127.0) as u8;
+                    let g = ((normal.y + 1.0) * 127.0) as u8;
+                    let b = ((normal.z + 1.0) * 127.0) as u8;
+
+                    *pixel = image::Rgb([r, g, b]);
                 }
             }
         }

@@ -3,8 +3,9 @@ use crate::math::ray::Ray;
 use crate::math::vector::Vector3;
 
 pub trait Object {
-    fn hit_by(&self, ray: &Ray) -> bool;
+    fn hit_at(&self, ray: &Ray) -> Option<f64>;
     fn color(&self) -> Color;
+    fn position(&self) -> Vector3;
 }
 
 pub struct Sphere {
@@ -24,7 +25,7 @@ impl Sphere {
 }
 
 impl Object for Sphere {
-    fn hit_by(&self, ray: &Ray) -> bool {
+    fn hit_at(&self, ray: &Ray) -> Option<f64> {
         let oc = ray.origin - self.position;
 
         let a = ray.direction.dot(ray.direction);
@@ -32,10 +33,18 @@ impl Object for Sphere {
         let c = oc.dot(oc) - self.radius * self.radius;
 
         let discriminant = b * b - 4.0 * a * c;
-        discriminant > 0.0
+        if discriminant < 0.0 {
+            None
+        } else {
+            Some((-b - discriminant.sqrt()) / (2.0 * a))
+        }
     }
 
     fn color(&self) -> Color {
         self.color
+    }
+
+    fn position(&self) -> Vector3 {
+        self.position
     }
 }
