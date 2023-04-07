@@ -14,7 +14,7 @@ fn main() {
     let right = Vector3::new(1.0, 0.0, 0.0);
 
     let sphere1 = Sphere::new(Vector3::new(0.0, 0.0, -3.0), 0.5, Color::new(255, 0, 0));
-    let sphere2 = Sphere::new(Vector3::new(0.5, 0.0, -2.0), 0.25, Color::new(0, 128, 128));
+    let sphere2 = Sphere::new(Vector3::new(-0.5, 0.0, -2.0), 0.25, Color::new(0, 128, 128));
 
     let mut world = World::new("Chromatic - Raytracer".to_string(), 1920, 1280);
     world.camera(position, up, right);

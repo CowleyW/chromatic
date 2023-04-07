@@ -2,6 +2,7 @@ use crate::math::ray::Ray;
 use crate::math::vector::Vector3;
 use crate::world::object::Object;
 use pixels::Pixels;
+use std::cmp::Ordering;
 use std::ops::Deref;
 
 #[derive(Debug)]
@@ -43,16 +44,34 @@ impl Camera {
             );
 
             *pixel = image::Rgb(ray.color().data());
-            for object in objects.into_iter() {
-                if let Some(t) = object.hit_at(&ray) {
-                    let normal = (ray.at(t) - object.position()).normalize();
 
-                    let r = ((normal.x + 1.0) * 127.0) as u8;
-                    let g = ((normal.y + 1.0) * 127.0) as u8;
-                    let b = ((normal.z + 1.0) * 127.0) as u8;
+            let closest_object = objects
+                .into_iter()
+                .filter_map(|o| {
+                    if let Some(t) = o.hit_at(&ray) {
+                        Some((t, o))
+                    } else {
+                        None
+                    }
+                })
+                .min_by(|(t1, o1), (t2, o2)| {
+                    if t1 < t2 {
+                        Ordering::Less
+                    } else if t1 > t2 {
+                        Ordering::Greater
+                    } else {
+                        Ordering::Equal
+                    }
+                });
 
-                    *pixel = image::Rgb([r, g, b]);
-                }
+            if let Some((t, o)) = closest_object {
+                let normal = (ray.at(t) - o.position()).normalize();
+
+                let r = ((normal.x + 1.0) * 127.0) as u8;
+                let g = ((normal.y + 1.0) * 127.0) as u8;
+                let b = ((normal.z + 1.0) * 127.0) as u8;
+
+                *pixel = image::Rgb([r, g, b]);
             }
         }
 

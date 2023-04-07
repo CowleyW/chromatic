@@ -28,18 +28,18 @@ impl Object for Sphere {
     fn hit_at(&self, ray: &Ray) -> Option<f64> {
         let oc = ray.origin - self.position;
 
-        let a = ray.direction.dot(ray.direction);
-        let b = oc.dot(ray.direction) * 2.0;
-        let c = oc.dot(oc) - self.radius * self.radius;
+        let a = ray.direction.len_squared();
+        let half_b = oc.dot(ray.direction);
+        let c = oc.len_squared() - self.radius * self.radius;
 
-        let discriminant = b * b - 4.0 * a * c;
+        let discriminant = half_b * half_b - a * c;
         if discriminant < 0.0 {
             None
         } else {
-            Some((-b - discriminant.sqrt()) / (2.0 * a))
+            Some((-half_b - discriminant.sqrt()) / a)
         }
     }
-
+    
     fn color(&self) -> Color {
         self.color
     }
