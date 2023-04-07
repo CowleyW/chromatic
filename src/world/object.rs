@@ -39,7 +39,7 @@ impl Object for Sphere {
             Some((-half_b - discriminant.sqrt()) / a)
         }
     }
-    
+
     fn color(&self) -> Color {
         self.color
     }

@@ -1,11 +1,11 @@
+use crate::math::vector::Vector3;
 use crate::world::camera::Camera;
+use crate::world::object::Object;
 use pixels::{Pixels, SurfaceTexture};
 use winit::dpi::PhysicalSize;
 use winit::event::{Event, WindowEvent};
 use winit::event_loop::EventLoop;
 use winit::window::WindowBuilder;
-use crate::math::vector::Vector3;
-use crate::world::object::Object;
 
 pub struct World {
     name: String,
