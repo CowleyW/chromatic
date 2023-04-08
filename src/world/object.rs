@@ -36,7 +36,19 @@ impl Object for Sphere {
         if discriminant < 0.0 {
             None
         } else {
-            Some((-half_b - discriminant.sqrt()) / a)
+            let root = (-half_b - discriminant.sqrt()) / a;
+            if root < 0.0 {
+                let root = (-half_b + discriminant.sqrt()) / a;
+                if root < 0.0 {
+                    None
+                }
+                else {
+                    Some(root)
+                }
+            }
+            else {
+                Some(root)
+            }
         }
     }
 

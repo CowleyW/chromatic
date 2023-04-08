@@ -1,6 +1,8 @@
 use crate::math::color::Color;
 use crate::math::vector::Vector3;
 
+/// A struct that represents a ray. Each ray has an origin and a direction vector which establishes
+/// the property of the ray
 #[derive(Copy, Clone, Debug)]
 pub struct Ray {
     pub origin: Vector3,
@@ -8,14 +10,19 @@ pub struct Ray {
 }
 
 impl Ray {
+    /// Returns a new ray with the given origin and direction
     pub fn new(origin: Vector3, direction: Vector3) -> Ray {
         Ray { origin, direction }
     }
 
+    /// Returns the vector at location `t` along the ray
+    ///
+    /// This location is equal to `O + D(t)`
     pub fn at(&self, t: f64) -> Vector3 {
         self.origin + (self.direction * t)
     }
 
+    /// Returns the color of the ray if it hits nothing
     pub fn color(&self) -> Color {
         let dir = self.direction.normalize();
 

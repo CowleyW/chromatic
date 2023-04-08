@@ -4,7 +4,6 @@ use crate::math::vector::Vector3;
 use crate::world::object::Object;
 use pixels::Pixels;
 use std::cmp::Ordering;
-use std::ops::Deref;
 
 #[derive(Debug)]
 pub struct Camera {
@@ -84,7 +83,7 @@ impl Camera {
                     None
                 }
             })
-            .min_by(|(t1, o1), (t2, o2)| {
+            .min_by(|(t1, _), (t2, _)| {
                 if t1 < t2 {
                     Ordering::Less
                 } else if t1 > t2 {

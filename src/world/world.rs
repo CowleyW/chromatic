@@ -44,7 +44,7 @@ impl World {
     pub fn run(self) -> ! {
         let event_loop = EventLoop::new();
         let window = WindowBuilder::new()
-            .with_title("Chromatic")
+            .with_title(self.name)
             .with_inner_size(PhysicalSize::new(self.width, self.height))
             .build(&event_loop)
             .unwrap();
