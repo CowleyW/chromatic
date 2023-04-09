@@ -42,6 +42,14 @@ impl World {
     }
 
     pub fn run(self) -> ! {
+        let buf = if let Some(camera) = self.camera {
+            Some(camera.render_to(self.width, self.height, &self.objects))
+        }
+        else {
+            println!("No camera attached!");
+            None
+        };
+
         let event_loop = EventLoop::new();
         let window = WindowBuilder::new()
             .with_title(self.name)
@@ -54,8 +62,17 @@ impl World {
             Pixels::new(self.width, self.height, surface_texture).unwrap()
         };
 
-        if let Some(camera) = self.camera {
-            camera.render_to(&mut pixels, &self.objects);
+        if let Some(image_buffer) = buf {
+            pixels
+                .frame_mut()
+                .chunks_exact_mut(4)
+                .zip(image_buffer.chunks_exact(3))
+                .for_each(|(pixel, im_pixel)| {
+                    pixel[0] = im_pixel[0];
+                    pixel[1] = im_pixel[1];
+                    pixel[2] = im_pixel[2];
+                    pixel[3] = 0xff;
+                });
         }
 
         event_loop.run(move |event, _, control_flow| {

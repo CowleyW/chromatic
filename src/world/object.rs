@@ -60,3 +60,4 @@ impl Object for Sphere {
         self.position
     }
 }
+
